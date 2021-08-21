@@ -1,10 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import competitionsReducer from '../features/competitions/competitionsSlice';
+import matchesReducer from '../features/matches/matchesSlice';
+import breadcrumbReducer from '../features/breadcrumb/breadcrumbSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    competitions: competitionsReducer,
+    matches: matchesReducer,
+    breadcrumb: breadcrumbReducer
   },
+  devTools: true
 });
 
 export type AppDispatch = typeof store.dispatch;
