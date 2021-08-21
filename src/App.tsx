@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import './App.css';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useAppSelector } from './app/hooks';
 import { CompetitionList } from './components/CompetitionList';
 import { MatchList } from './components/MatchList';
 import { selectBreadcrumb } from './features/breadcrumb/breadcrumbSlice';

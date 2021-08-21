@@ -1,4 +1,4 @@
-import { Match } from "../common/types";
+import { Match, MatchDetails } from "../common/types";
 
 type Area = {
     id: number,
@@ -21,6 +21,10 @@ type CompetitionResponse = {
 type MatchesResponse = {
     count: number,
     matches: Array<Match>
+}
+
+type MatchDetailsResponse = {
+    match: MatchDetails
 }
 
 const baseUrl = "http://api.football-data.org/v2";
@@ -46,4 +50,13 @@ export const getMatchesByCompetition = (id: number) => {
             'X-Auth-Token': process.env.REACT_APP_X_AUTH_TOKEN!
         }
     }).then(res => res.json() as Promise<MatchesResponse>)
+}
+
+export const getMatchInformations = (id: number) => {
+    return fetch(`${baseUrl}/matches/${id}`, {
+        method: 'GET',
+        headers: {
+            'X-Auth-Token': process.env.REACT_APP_X_AUTH_TOKEN!
+        }
+    }).then(res => res.json() as Promise<MatchDetailsResponse>)
 }

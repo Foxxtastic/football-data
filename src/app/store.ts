@@ -1,13 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import breadcrumbReducer from '../features/breadcrumb/breadcrumbSlice';
 import competitionsReducer from '../features/competitions/competitionsSlice';
 import matchesReducer from '../features/matches/matchesSlice';
-import breadcrumbReducer from '../features/breadcrumb/breadcrumbSlice';
+import matchDetailsReducer from '../features/matchDetails/matcDetailsSlice';
 
 export const store = configureStore({
   reducer: {
+    breadcrumb: breadcrumbReducer,
     competitions: competitionsReducer,
     matches: matchesReducer,
-    breadcrumb: breadcrumbReducer
+    matchDetails: matchDetailsReducer
   },
   devTools: true
 });

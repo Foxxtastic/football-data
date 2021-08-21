@@ -32,7 +32,7 @@ export const getAllMatchesByCompetition = createAsyncThunk(
         const competition = competitionResponse.competitions.find(_ => mapCompetition(_).name === competitionName)
 
         if (competition === undefined) {
-            throw new Error("Competition not exists!");
+            throw new Error("Competition don't exists!");
         }
         const response = await getMatchesByCompetition(competition.id);
         return response;

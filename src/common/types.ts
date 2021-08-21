@@ -1,3 +1,8 @@
+export type Breadcrumb = {
+    text: string,
+    link: string
+}
+
 export type Team = {
     id: number,
     name: string
@@ -14,12 +19,21 @@ export type Match = {
     status: MatchStatus
 }
 
-export type Score = {
-    winner: string,
-    duration: string
+type Result = {
+    homeTeam: number | null,
+    awayTeam: number | null
 }
 
-export type Breadcrumb = {
-    text: string,
-    link: string
+export type Score = {
+    winner: string,
+    duration: string,
+    fullTime: Result,
+    halfTime: Result,
+    extraTime?: Result,
+    penalities?: Result
+}
+
+export type MatchDetails = Match & {
+    venue: string,
+    score: Score
 }
