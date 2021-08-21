@@ -34,6 +34,7 @@ export type Score = {
 }
 
 export type MatchDetails = Match & {
+    competition: string,
     venue: string,
     score: Score
 }

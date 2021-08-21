@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Competition, getCompetitions } from '../../api';
+import { getCompetitions } from '../../api';
 import { RootState } from '../../app/store';
 import { mapCompetition } from '../../common/mappings';
 

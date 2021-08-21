@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import breadcrumbReducer from '../features/breadcrumb/breadcrumbSlice';
 import competitionsReducer from '../features/competitions/competitionsSlice';
 import matchesReducer from '../features/matches/matchesSlice';
-import matchDetailsReducer from '../features/matchDetails/matcDetailsSlice';
+import matchDetailsReducer from '../features/matchDetails/matchDetailsSlice';
 
 export const store = configureStore({
   reducer: {

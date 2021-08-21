@@ -34,7 +34,7 @@ export const getMatchDetailsById = createAsyncThunk(
         const response = await getMatchInformations(matchId);
 
         if (response === undefined) {
-            throw new Error("Match don't exists!");
+            throw new Error("Match doesn't exists!");
         }
         return response;
     }
@@ -74,5 +74,5 @@ export const matchDataSlice = createSlice({
     },
 });
 
-export const selectMatches = (state: RootState) => state.matches.items;
+export const selectMatch = (state: RootState) => state.matchDetails.items;
 export default matchDataSlice.reducer;
