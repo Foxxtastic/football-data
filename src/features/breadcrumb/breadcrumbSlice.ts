@@ -1,8 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { Breadcrumb } from '../../common/types';
 
-interface BreadcrumbState {
+type Breadcrumb = {
+    text: string,
+    link: string
+}
+
+export interface BreadcrumbState {
     items: Array<Breadcrumb>;
 }
 

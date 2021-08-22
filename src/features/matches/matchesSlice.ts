@@ -1,40 +1,46 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getCompetitions, getMatchesByCompetition } from '../../api';
+import { MatchStatus } from '../../api';
+import { apiError, getCompetitions, getMatchesByCompetition } from '../../api/apiCalls';
 import { RootState } from '../../app/store';
-import { mapCompetition } from '../../common/mappings';
-import { MatchStatus } from '../../common/types';
+import { mapCompetition, mapMatchItem } from '../../common/mappings';
+import { LoadingStatus, MatchState } from '../../common/types';
 
-type MatchItem = {
+export type MatchItem = {
     id: number,
-    utcDate: Date,
+    utcDate: string, // https://github.com/reduxjs/redux-toolkit/issues/456 -- cann't store dates in redux store
     matchday: number,
     homeTeam: string,
     awayTeam: string,
-    status: MatchStatus
+    status: MatchStatus,
+    state: MatchState | null
 }
 
 export interface MatchesState {
     items: Array<MatchItem>;
-    status: 'idle' | 'loading' | 'failed';
-    errorMessage?: string;
+    status: LoadingStatus;
 }
 
 const initialState: MatchesState = {
     items: [],
-    status: 'idle',
-    errorMessage: undefined
+    status: LoadingStatus.Idle
 };
 
 export const getAllMatchesByCompetition = createAsyncThunk(
     'matches/getAll',
     async (competitionName: string) => {
         const competitionResponse = await getCompetitions();
+        if (competitionResponse === apiError) {
+            throw new Error("Cannot fetch Competitions! You might have ran out of free calls limit for this minute.");
+        }
         const competition = competitionResponse.competitions.find(_ => mapCompetition(_).name === competitionName)
 
         if (competition === undefined) {
-            throw new Error("Competition don't exists!");
+            throw new Error("Competition doesn't exist!");
         }
         const response = await getMatchesByCompetition(competition.id);
+        if (response === apiError) {
+            throw new Error("Cannot fetch Matches! You might have ran out of free calls limit for this minute.");
+        }
         return response;
     }
 );
@@ -47,26 +53,19 @@ export const matchesSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAllMatchesByCompetition.pending, (state) => {
-                state.status = 'loading';
+                state.status = LoadingStatus.Loading
             })
             .addCase(getAllMatchesByCompetition.fulfilled, (state, action) => {
-                state.status = 'idle';
-                state.items = action.payload.matches.map(_ => ({
-                    id: _.id,
-                    utcDate: _.utcDate,
-                    matchday: _.matchday,
-                    homeTeam: _.homeTeam.name,
-                    awayTeam: _.awayTeam.name,
-                    status: _.status
-                }))
+                state.status = LoadingStatus.Idle
+                state.items = action.payload.matches.map(mapMatchItem)
             })
-            .addCase(getAllMatchesByCompetition.rejected, (state, action) => {
-                state.status = 'failed';
+            .addCase(getAllMatchesByCompetition.rejected, (state) => {
+                state.status = LoadingStatus.Failed
                 state.items = [];
-                state.errorMessage = `Technical error: ${action.error.message}`
             });
     },
 });
 
 export const selectMatches = (state: RootState) => state.matches.items;
+export const selectStatus = (state: RootState) => state.matches.status;
 export default matchesSlice.reducer;
