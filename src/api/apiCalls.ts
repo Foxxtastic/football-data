@@ -1,6 +1,6 @@
 import { CompetitionResponse, MatchDetailsResponse, MatchesResponse } from "./types";
 
-const baseUrl = "http://api.football-data.org/v2";
+const baseUrl = "https://api.football-data.org/v2";
 export const apiError = "error";
 
 const handleError = () => {
